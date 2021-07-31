@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import GridComponent from './components/table/table';
-import { Column } from "react-table";
+import { Column, UseTableRowProps } from "react-table";
+import { IColumn } from './components/table/types';
 
 function TableComponent() {
     const [page, setPage] = useState(0);
@@ -30,7 +31,32 @@ function TableComponent() {
             currency: "EUR",
             amount: 11000,
             date: "2020-02-01"
-        }        
+        },
+        {
+            currency: "EUR",
+            amount: 10000,
+            date: "2020-01-01"
+        },
+        {
+            currency: "EUR",
+            amount: 11000,
+            date: "2020-02-01"
+        },
+        {
+            currency: "GBP",
+            amount: 12000,
+            date: "2020-01-01"
+        },
+        {
+            currency: "EUR",
+            amount: 10000,
+            date: "2020-01-01"
+        },
+        {
+            currency: "EUR",
+            amount: 11000,
+            date: "2020-02-01"
+        }          
     ]);
 
     interface IData {
@@ -39,19 +65,27 @@ function TableComponent() {
         date: string
     }
 
-    const columns: Column<IData>[] = [
+    const columns: IColumn<IData> = [
         {
             Header: "Currency",
-            accessor: "currency"
+            accessor: "currency",
+            sticky: "left",
+            width: 400,
+            minWidth: 400
         },
         {
             Header: "Amount",
-            accessor: "amount"
+            accessor: "amount",
+            width: 400,
+            minWidth: 400
         },
         {
             Header: "Date",
-            accessor: "date"
+            accessor: "date",
+            width: 400,
+            minWidth: 400
         }
+        
     ];
 
     const onPageChange = (page: number) => {
@@ -92,6 +126,11 @@ function TableComponent() {
         setPerPage(value);
     }
 
+    const isRowSelectable = (row: UseTableRowProps<any>) => {
+        if(row.values?.currency === "GBP") return true;
+        return false;
+    }
+
     return (
         <>
             <GridComponent
@@ -107,6 +146,9 @@ function TableComponent() {
                 onChangePerPage={onChangePerPage}
                 totalPages={2}
                 checkBoxSelection={true}
+                // selectPageWise={true}
+                isRowSelectable={isRowSelectable}
+                tooltipMessageForDisabledRow={"This row is disabled against selection"}
             />
         </>
     )

@@ -10,23 +10,30 @@ export default function TableHeader<T extends object>(Props: TableHeaderProps<T>
     const classes = useStyles();
     const {
         headerGroups,
-        getToggleAllRowsSelectedProps
+        getToggleAllRowsSelectedProps,
+        getToggleAllPageRowsSelectedProps
     } = Props.instance;
-
-    console.log(Props.instance);
-
+    const { selectPageWise, checkBoxSelection } = Props;
     return (
         <>
-            <TableHead>
+            <TableHead className="header">
                 {headerGroups.map(headerGroup => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                        <TableCell padding="checkbox">
-                            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()}/>
-                        </TableCell>
+                    <TableRow {...headerGroup.getHeaderGroupProps()} className="tr">
+                        {(checkBoxSelection &&
+                            <TableCell padding="checkbox" className="th">
+                                {/* {
+                                    (selectPageWise) ? <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+                                        : <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                                } */}
+                                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                            </TableCell>
+                        )}
                         {headerGroup.headers.map(column => (
                             <>
 
-                                <TableCell className={classes.tableCell} {...column.getHeaderProps()}>
+                                <TableCell className={`${classes.tableCell} th`} {...column.getHeaderProps({
+                                    style: { minWidth: column.minWidth, width: column.width },
+                                })}>
                                     {column.render('Header')}
                                 </TableCell>
                             </>

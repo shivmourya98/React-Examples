@@ -3,6 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 interface Props {
     indeterminate?: boolean;
+    disabled?: boolean;
 }
 
 const useCombinedRefs = (...refs: any): React.MutableRefObject<any> => {
@@ -23,7 +24,7 @@ const useCombinedRefs = (...refs: any): React.MutableRefObject<any> => {
 };
 
 export const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
-    ({ indeterminate, ...rest }, ref: React.Ref<HTMLInputElement>) => {
+    ({ indeterminate, disabled, ...rest }, ref: React.Ref<HTMLInputElement>) => {
         const defaultRef = React.useRef(null);
         const combinedRef = useCombinedRefs(ref, defaultRef);
 
@@ -35,7 +36,7 @@ export const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 
         return (
             <React.Fragment>
-                <Checkbox color="primary" ref={combinedRef} {...rest} />
+                <Checkbox color="primary" disabled={disabled} ref={combinedRef} {...rest} />
             </React.Fragment>
         );
     }
